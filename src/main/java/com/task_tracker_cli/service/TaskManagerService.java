@@ -42,4 +42,12 @@ public class TaskManagerService {
             System.out.println("Failed to save task");
         }
     }
+
+    public void delete(int id) {
+        try {
+            this.taskRepository.delete(id);
+        } catch (FailedToConvertTasksToJsonException | FailedToWriteToFileException e) {
+            System.out.println("Failed to delete task");
+        }
+    }
 }

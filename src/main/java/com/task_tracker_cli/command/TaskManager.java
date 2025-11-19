@@ -24,4 +24,9 @@ public class TaskManager {
     public void create(String description) {
         taskManagerService.create(description);
     }
+
+    @ShellMethod("Delete a task")
+    public void delete(int id) {
+        taskManagerService.delete(id);
+    }
 }

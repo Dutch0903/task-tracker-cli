@@ -42,6 +42,16 @@ public class TaskRepository {
     public void save(Task task) throws FailedToConvertTasksToJsonException, FailedToWriteToFileException {
         this.tasks.add(task);
 
+        this.saveTasks();
+    }
+
+    public void delete(int id) throws FailedToConvertTasksToJsonException, FailedToWriteToFileException {
+        this.tasks.removeIf((Task task) -> task.getId() == id);
+
+        this.saveTasks();
+    }
+
+    private void saveTasks() throws FailedToConvertTasksToJsonException, FailedToWriteToFileException {
         this.taskWriter.write(this.file, this.tasks);
     }
 
