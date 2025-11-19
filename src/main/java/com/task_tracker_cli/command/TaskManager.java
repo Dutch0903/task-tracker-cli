@@ -19,4 +19,9 @@ public class TaskManager {
     public void list() {
         taskManagerService.listAllTasks();
     }
+
+    @ShellMethod("Create a new task")
+    public void create(String description) {
+        taskManagerService.create(description);
+    }
 }

@@ -1,6 +1,9 @@
 package com.task_tracker_cli.service;
 
+import com.task_tracker_cli.TaskState;
+import com.task_tracker_cli.exception.FailedToConvertTasksToJsonException;
 import com.task_tracker_cli.exception.FailedToLoadTasksException;
+import com.task_tracker_cli.exception.FailedToWriteToFileException;
 import com.task_tracker_cli.model.Task;
 import com.task_tracker_cli.repository.TaskRepository;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,20 @@ public class TaskManagerService {
             tasks.forEach(System.out::println);
         } catch(FailedToLoadTasksException e) {
             System.out.println("Failed to load tasks!");
+        }
+    }
+
+    public void create(String description) {
+        int newId = this.taskRepository.getNewId();
+
+        Task task = new Task(newId, description, TaskState.TODO);
+
+        try {
+            this.taskRepository.save(task);
+
+            System.out.println("Created new task: " + task);
+        } catch (FailedToConvertTasksToJsonException | FailedToWriteToFileException e) {
+            System.out.println("Failed to save task");
         }
     }
 }

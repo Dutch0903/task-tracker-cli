@@ -13,9 +13,8 @@ import java.util.List;
 @Service
 public class TaskLoader {
 
-    public List<Task> load(String fileName) throws FailedToLoadTasksException {
+    public List<Task> load(File file) throws FailedToLoadTasksException {
         ObjectMapper objectMapper = new ObjectMapper();
-        File file = new File(fileName);
 
         List<Task> tasks = List.of();
         try {
