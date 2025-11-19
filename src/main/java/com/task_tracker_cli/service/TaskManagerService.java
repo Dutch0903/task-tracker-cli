@@ -65,4 +65,27 @@ public class TaskManagerService {
             System.out.println("Failed to save updated task");
         }
     }
+
+    public void changeState(int id, TaskState state) {
+        Task task = this.taskRepository.findById(id);
+
+        if (task == null) {
+            System.out.println("No task found with Id: " + id);
+            return;
+        }
+
+        switch(state) {
+            case IN_PROGRESS -> task.markAsInProgress();
+            case DONE -> task.markAsDone();
+            default -> {
+                return;
+            }
+        }
+
+        try {
+            this.taskRepository.save(task);
+        } catch (FailedToSaveTasksException e) {
+            System.out.println("Failed to save updated task");
+        }
+    }
 }

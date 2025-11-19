@@ -1,5 +1,6 @@
 package com.task_tracker_cli.command;
 
+import com.task_tracker_cli.TaskState;
 import com.task_tracker_cli.service.TaskManagerService;
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
@@ -33,5 +34,15 @@ public class TaskManager {
     @ShellMethod("Update a task")
     public void update(int id, String description) {
         taskManagerService.update(id, description);
+    }
+
+    @ShellMethod("Mark task as in progress")
+    public void markInProgress(int id) {
+        taskManagerService.changeState(id, TaskState.IN_PROGRESS);
+    }
+
+    @ShellMethod("Mark task as done")
+    public void markDone(int id) {
+        taskManagerService.changeState(id, TaskState.DONE);
     }
 }
