@@ -1,12 +1,12 @@
 package com.task_tracker_cli.service;
 
 import com.task_tracker_cli.TaskState;
-import com.task_tracker_cli.exception.FailedToLoadTasksException;
 import com.task_tracker_cli.exception.FailedToSaveTasksException;
 import com.task_tracker_cli.model.Task;
 import com.task_tracker_cli.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -19,13 +19,15 @@ public class TaskManagerService {
     }
 
     public void listAllTasks() {
-        try {
-            Map<Integer, Task> tasks = this.taskRepository.getAll();
+        Map<Integer, Task> tasks = this.taskRepository.getAll();
 
-            tasks.values().forEach(System.out::println);
-        } catch (FailedToLoadTasksException e) {
-            System.out.println("Failed to load tasks!");
-        }
+        tasks.values().forEach(System.out::println);
+    }
+
+    public void listTaskWithState(TaskState state) {
+        List<Task> tasks = this.taskRepository.getAll().values().stream().toList();
+
+        tasks.stream().filter(task -> task.getState() == state).forEach(System.out::println);
     }
 
     public void create(String description) {
@@ -74,7 +76,7 @@ public class TaskManagerService {
             return;
         }
 
-        switch(state) {
+        switch (state) {
             case IN_PROGRESS -> task.markAsInProgress();
             case DONE -> task.markAsDone();
             default -> {

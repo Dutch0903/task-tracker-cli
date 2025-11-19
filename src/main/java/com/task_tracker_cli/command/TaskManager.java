@@ -17,8 +17,17 @@ public class TaskManager {
     }
 
     @ShellMethod("List all tasks")
-    public void list() {
-        taskManagerService.listAllTasks();
+    public void list(String state) {
+        if (state == null) {
+            taskManagerService.listAllTasks();
+        } else {
+            try {
+                TaskState taskState = TaskState.valueOf(state.toUpperCase().replaceAll("[_\\- ]", "_"));
+                taskManagerService.listTaskWithState(taskState);
+            }  catch (IllegalArgumentException e) {
+                System.out.println("Invalid task state: " + state);
+            }
+        }
     }
 
     @ShellMethod("Create a new task")

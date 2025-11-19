@@ -28,7 +28,7 @@ public class TaskRepository {
         loadTasks();
     }
 
-    public Map<Integer, Task> getAll() throws FailedToLoadTasksException {
+    public Map<Integer, Task> getAll() {
         return this.tasks;
     }
 
