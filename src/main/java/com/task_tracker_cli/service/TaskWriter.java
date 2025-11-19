@@ -1,32 +1,28 @@
 package com.task_tracker_cli.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.task_tracker_cli.exception.FailedToConvertTasksToJsonException;
-import com.task_tracker_cli.exception.FailedToWriteToFileException;
+import com.task_tracker_cli.exception.FailedToSaveTasksException;
 import com.task_tracker_cli.model.Task;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 
 @Service
 public class TaskWriter {
 
-    public void write(File file, List<Task> tasks) throws FailedToConvertTasksToJsonException, FailedToWriteToFileException {
+    public void write(File file, Map<Integer, Task> tasks) throws FailedToSaveTasksException {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            String json = objectMapper.writeValueAsString(tasks);
+            String json = objectMapper.writeValueAsString(tasks.values());
 
             FileWriter writer = new FileWriter(file);
             writer.write(json);
             writer.close();
-        } catch (JsonProcessingException e) {
-            throw new FailedToConvertTasksToJsonException(e);
         } catch (IOException e) {
-            throw new FailedToWriteToFileException(e);
+            throw new FailedToSaveTasksException(e);
         }
     }
 }

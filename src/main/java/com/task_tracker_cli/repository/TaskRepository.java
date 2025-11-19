@@ -1,21 +1,20 @@
 package com.task_tracker_cli.repository;
 
-import com.task_tracker_cli.exception.FailedToConvertTasksToJsonException;
 import com.task_tracker_cli.exception.FailedToLoadTasksException;
-import com.task_tracker_cli.exception.FailedToWriteToFileException;
+import com.task_tracker_cli.exception.FailedToSaveTasksException;
 import com.task_tracker_cli.model.Task;
 import com.task_tracker_cli.service.TaskLoader;
 import com.task_tracker_cli.service.TaskWriter;
 import org.springframework.stereotype.Repository;
 
 import java.io.File;
-import java.util.List;
+import java.util.Map;
 import java.util.OptionalInt;
 
 @Repository
 public class TaskRepository {
     private final File file;
-    private List<Task> tasks;
+    private Map<Integer, Task> tasks;
 
     private final TaskLoader taskLoader;
     private final TaskWriter taskWriter;
@@ -29,29 +28,33 @@ public class TaskRepository {
         loadTasks();
     }
 
-    public List<Task> getAll() throws FailedToLoadTasksException {
+    public Map<Integer, Task> getAll() throws FailedToLoadTasksException {
         return this.tasks;
     }
 
     public int getNewId() {
-        OptionalInt highestId = this.tasks.stream().mapToInt(Task::getId).max();
+        OptionalInt highestId = this.tasks.values().stream().mapToInt(Task::getId).max();
 
         return highestId.isEmpty() ? 1 : highestId.getAsInt() + 1;
     }
 
-    public void save(Task task) throws FailedToConvertTasksToJsonException, FailedToWriteToFileException {
-        this.tasks.add(task);
+    public void save(Task task) throws FailedToSaveTasksException {
+        this.tasks.put(task.getId(), task);
 
         this.saveTasks();
     }
 
-    public void delete(int id) throws FailedToConvertTasksToJsonException, FailedToWriteToFileException {
-        this.tasks.removeIf((Task task) -> task.getId() == id);
+    public void delete(int id) throws FailedToSaveTasksException {
+        this.tasks.remove(id);
 
         this.saveTasks();
     }
 
-    private void saveTasks() throws FailedToConvertTasksToJsonException, FailedToWriteToFileException {
+    public Task findById(int id) {
+        return this.tasks.getOrDefault(id, null);
+    }
+
+    private void saveTasks() throws FailedToSaveTasksException {
         this.taskWriter.write(this.file, this.tasks);
     }
 

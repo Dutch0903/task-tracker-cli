@@ -1,12 +1,14 @@
 package com.task_tracker_cli.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.task_tracker_cli.TaskState;
 
 import java.util.Objects;
 
 public class Task {
+    @JsonKey
     private final int id;
     private String description;
     private TaskState state;
