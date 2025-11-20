@@ -1,4 +1,4 @@
-package com.task_tracker_cli;
+package com.task_tracker_cli.type;
 
 public enum TaskState {
     TODO,

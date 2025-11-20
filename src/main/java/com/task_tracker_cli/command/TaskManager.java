@@ -1,10 +1,11 @@
 package com.task_tracker_cli.command;
 
-import com.task_tracker_cli.TaskState;
+import com.task_tracker_cli.type.TaskState;
 import com.task_tracker_cli.service.TaskManagerService;
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import org.springframework.shell.standard.ShellOption;
 
 @ShellComponent
 @ShellCommandGroup("Task Management")
@@ -17,14 +18,16 @@ public class TaskManager {
     }
 
     @ShellMethod("List all tasks")
-    public void list(String state) {
-        if (state == null) {
+    public void list(
+            @ShellOption(help = "Options: all, todo, in-progress, done", defaultValue = "all") String state
+    ) {
+        if (state.equals("all")) {
             taskManagerService.listAllTasks();
         } else {
             try {
                 TaskState taskState = TaskState.valueOf(state.toUpperCase().replaceAll("[_\\- ]", "_"));
                 taskManagerService.listTaskWithState(taskState);
-            }  catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException e) {
                 System.out.println("Invalid task state: " + state);
             }
         }

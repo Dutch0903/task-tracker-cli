@@ -17,6 +17,7 @@ public class TaskLoader {
 
     public Map<Integer, Task> load(File file) throws FailedToLoadTasksException {
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.findAndRegisterModules();
 
         Map<Integer, Task> tasks;
         try {

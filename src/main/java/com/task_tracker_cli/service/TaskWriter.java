@@ -16,6 +16,8 @@ public class TaskWriter {
     public void write(File file, Map<Integer, Task> tasks) throws FailedToSaveTasksException {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.findAndRegisterModules();
+
             String json = objectMapper.writeValueAsString(tasks.values());
 
             FileWriter writer = new FileWriter(file);

@@ -1,11 +1,12 @@
 package com.task_tracker_cli.service;
 
-import com.task_tracker_cli.TaskState;
+import com.task_tracker_cli.type.TaskState;
 import com.task_tracker_cli.exception.FailedToSaveTasksException;
 import com.task_tracker_cli.model.Task;
 import com.task_tracker_cli.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +34,7 @@ public class TaskManagerService {
     public void create(String description) {
         int newId = this.taskRepository.getNewId();
 
-        Task task = new Task(newId, description, TaskState.TODO);
+        Task task = new Task(newId, description, TaskState.TODO, OffsetDateTime.now(), OffsetDateTime.now());
 
         try {
             this.taskRepository.save(task);
