@@ -39,6 +39,18 @@ public class Task {
         this.updatedAt = updatedAt;
     }
 
+    public Task(
+            int id,
+            String description,
+            TaskState state
+    ) {
+        this.id = id;
+        this.description = description;
+        this.state = state;
+        this.createdAt = OffsetDateTime.now();
+        this.updatedAt = OffsetDateTime.now();
+    }
+
     public int getId() {
         return this.id;
     }
